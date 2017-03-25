@@ -16,8 +16,8 @@ targetCompatibility = '1.7'
 
 gradlePlugin {
     plugins {
-        awsS3Plugin {
-            id = 'ch.myniva.aws-s3-build-cache'
+        s3BuildCache {
+            id = 'ch.myniva.s3-build-cache'
             implementationClass = 'ch.myniva.gradle.caching.s3.AwsS3Plugin'
         }
     }
