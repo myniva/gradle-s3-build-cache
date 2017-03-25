@@ -1,0 +1,30 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'maven-publish'
+
+group = 'ch.myniva.gradle'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+gradlePlugin {
+    plugins {
+        awsS3Plugin {
+            id = 'ch.myniva.aws-s3-build-cache'
+            implementationClass = 'ch.myniva.gradle.caching.s3.AwsS3Plugin'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.105'
+
+    testCompile 'junit:junit:4.12'
+}
