@@ -47,6 +47,7 @@ public class AwsS3BuildCacheService implements BuildCacheService {
   @Override
   public boolean load(BuildCacheKey key, BuildCacheEntryReader reader) {
     if (s3.doesObjectExist(bucketName, key.getHashCode())) {
+      logger.info("Found cache item '{}' in S3 bucket", key.getHashCode());
       S3Object object = s3.getObject(bucketName, key.getHashCode());
       try (InputStream is = object.getObjectContent()) {
         reader.readFrom(is);
@@ -55,13 +56,14 @@ public class AwsS3BuildCacheService implements BuildCacheService {
         throw new BuildCacheException("Error while reading cache object from S3 bucket", e);
       }
     } else {
+      logger.info("Did not find cache item '{}' in S3 bucket", key.getHashCode());
       return false;
     }
   }
 
   @Override
   public void store(BuildCacheKey key, BuildCacheEntryWriter writer) {
-    logger.info("Start storing cache entry {}", key.getHashCode());
+    logger.info("Start storing cache entry '{}' in S3 bucket", key.getHashCode());
     ObjectMetadata meta = new ObjectMetadata();
     meta.setContentType(BUILD_CACHE_CONTENT_TYPE);
 
@@ -71,7 +73,7 @@ public class AwsS3BuildCacheService implements BuildCacheService {
         s3.putObject(bucketName, key.getHashCode(), is, meta);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new BuildCacheException("Error while storing cache object in S3 bucket", e);
     }
   }
 
@@ -82,6 +84,6 @@ public class AwsS3BuildCacheService implements BuildCacheService {
 
   @Override
   public void close() throws IOException {
-    // The AWS S3 client does not have state and does not need to be closed
+    // The AWS S3 client does not need to be closed
   }
 }
