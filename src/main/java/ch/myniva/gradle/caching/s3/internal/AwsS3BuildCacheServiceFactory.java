@@ -16,10 +16,13 @@
 
 package ch.myniva.gradle.caching.s3.internal;
 
+import static com.amazonaws.util.StringUtils.isNullOrEmpty;
+
 import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
-import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.gradle.api.GradleException;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory;
 import org.slf4j.Logger;
@@ -30,18 +33,34 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
 
   @Override
   public BuildCacheService createBuildCacheService(AwsS3BuildCache config) {
-    AmazonS3 s3 = AmazonS3ClientBuilder
-        .standard()
-        .withRegion(config.getRegion())
-        .build();
+    logger.debug("Start creating S3 build cache service");
 
-    try {
-      s3.getBucketPolicy(config.getBucket());
-    } catch (AmazonServiceException e) {
-      logger.warn("error code: {}", e.getErrorCode());
-      throw e;
-    }
+    verifyConfig(config);
+    AmazonS3 s3 = createS3Client(config);
 
     return new AwsS3BuildCacheService(s3, config.getBucket());
+  }
+
+  private void verifyConfig(AwsS3BuildCache config) {
+    if (isNullOrEmpty(config.getRegion())) {
+      throw new IllegalStateException("S3 build cache has no AWS region configured");
+    }
+    if (isNullOrEmpty(config.getBucket())) {
+      throw new IllegalStateException("S3 build cache has no bucket configured");
+    }
+  }
+
+  private AmazonS3 createS3Client(AwsS3BuildCache config) {
+    AmazonS3 s3;
+    try {
+      s3 = AmazonS3ClientBuilder
+          .standard()
+          .withRegion(config.getRegion())
+          .build();
+    } catch (SdkClientException e) {
+      logger.debug("Error while building AWS S3 client: {}", e.getMessage());
+      throw new GradleException("Creation of S3 build cache failed; cannot create S3 client", e);
+    }
+    return s3;
   }
 }
