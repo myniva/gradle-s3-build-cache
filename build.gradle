@@ -24,8 +24,8 @@ gradlePlugin {
 }
 
 dependencies {
-    compile 'com.amazonaws:aws-java-sdk-s3:1.11.105'
+    compile 'com.amazonaws:aws-java-sdk-s3:1.+'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.+'
     testCompile 'org.mockito:mockito-core:2.+'
 }
