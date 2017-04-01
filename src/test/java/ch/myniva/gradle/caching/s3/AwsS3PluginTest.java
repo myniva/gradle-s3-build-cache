@@ -16,20 +16,27 @@
 
 package ch.myniva.gradle.caching.s3;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import ch.myniva.gradle.caching.s3.internal.AwsS3BuildCacheServiceFactory;
-import org.gradle.api.Plugin;
 import org.gradle.api.initialization.Settings;
 import org.gradle.caching.configuration.BuildCacheConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.Test;
 
-public class AwsS3Plugin implements Plugin<Settings> {
-  private static final Logger logger = LoggerFactory.getLogger(AwsS3Plugin.class);
+public class AwsS3PluginTest {
 
-  @Override
-  public void apply(Settings settings) {
-    logger.info("Registering S3 build cache");
-    BuildCacheConfiguration buildCacheConfiguration = settings.getBuildCache();
-    buildCacheConfiguration.registerBuildCacheService(AwsS3BuildCache.class, AwsS3BuildCacheServiceFactory.class);
+  @Test
+  public void testApplyPlugin() {
+    Settings settings = mock(Settings.class);
+    BuildCacheConfiguration conf = mock(BuildCacheConfiguration.class);
+    when(settings.getBuildCache()).thenReturn(conf);
+
+    AwsS3Plugin plugin = new AwsS3Plugin();
+    plugin.apply(settings);
+
+    verify(conf).registerBuildCacheService(AwsS3BuildCache.class, AwsS3BuildCacheServiceFactory.class);
   }
+
 }
