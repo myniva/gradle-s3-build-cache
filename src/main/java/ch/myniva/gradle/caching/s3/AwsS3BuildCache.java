@@ -16,29 +16,12 @@
 
 package ch.myniva.gradle.caching.s3;
 
-import org.gradle.api.Action;
-import org.gradle.api.credentials.AwsCredentials;
 import org.gradle.caching.configuration.AbstractBuildCache;
 
 public class AwsS3BuildCache extends AbstractBuildCache {
 
-  private AwsCredentials credentials;
   private String region;
   private String bucket;
-
-  /**
-   * Returns the credentials used to access the AWS S3 bucket.
-   */
-  public AwsCredentials getCredentials() {
-    return credentials;
-  }
-
-  /**
-   * Configures the credentials used to access the AWS S3 bucket.
-   */
-  public void credentials(Action<? super AwsCredentials> configuration) {
-    configuration.execute(credentials);
-  }
 
   public String getRegion() {
     return region;
