@@ -62,8 +62,6 @@ The `buildCache` configuration block might look like this:
 
 ```
 
------
-
 More details about configuring the Gradle build cache can be found in the
 [official Gradle documentation](https://docs.gradle.org/3.5-rc-2/userguide/build_cache.html#sec:build_cache_configure).
 
