@@ -1,5 +1,6 @@
 plugins {
     id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.9.7'
 }
 
 repositories {
@@ -7,12 +8,20 @@ repositories {
 }
 
 apply plugin: 'maven-publish'
+apply plugin: 'com.gradle.plugin-publish'
 
 group = 'ch.myniva.gradle'
 version = '0.0.1-SNAPSHOT'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
+
+dependencies {
+    compile 'com.amazonaws:aws-java-sdk-s3:1.+'
+
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.mockito:mockito-core:2.+'
+}
 
 gradlePlugin {
     plugins {
@@ -23,9 +32,16 @@ gradlePlugin {
     }
 }
 
-dependencies {
-    compile 'com.amazonaws:aws-java-sdk-s3:1.+'
+pluginBundle {
+    website = 'https://github.com/myniva/gradle-s3-build-cache'
+    vcsUrl = 'https://github.com/myniva/gradle-s3-build-cache'
+    description = 'An AWS S3 build cache implementation'
+    tags = ['build-cache']
 
-    testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:2.+'
+    plugins {
+        s3BuildCache {
+            id = 'ch.myniva.s3-build-cache'
+            displayName = 'AWS S3 build cache'
+        }
+    }
 }
