@@ -29,7 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<AwsS3BuildCache> {
-  Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheServiceFactory.class);
+
+  private static final Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheServiceFactory.class);
 
   @Override
   public BuildCacheService createBuildCacheService(AwsS3BuildCache config) {
