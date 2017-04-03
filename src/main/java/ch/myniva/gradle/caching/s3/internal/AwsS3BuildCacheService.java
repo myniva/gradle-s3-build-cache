@@ -28,13 +28,12 @@ import org.gradle.caching.BuildCacheEntryWriter;
 import org.gradle.caching.BuildCacheException;
 import org.gradle.caching.BuildCacheKey;
 import org.gradle.caching.BuildCacheService;
-import org.gradle.caching.internal.tasks.TaskOutputPacker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AwsS3BuildCacheService implements BuildCacheService {
-  static final String BUILD_CACHE_CONTENT_TYPE = "application/vnd.gradle.build-cache-artifact.v" + TaskOutputPacker.CACHE_ENTRY_FORMAT;
 
+  static final String BUILD_CACHE_CONTENT_TYPE = "application/vnd.gradle.build-cache-artifact";
   private static final Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheService.class);
 
   private final AmazonS3 s3;
