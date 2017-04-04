@@ -69,7 +69,7 @@ More details about configuring the Gradle build cache can be found in the
 
 ### AWS credentials
 
-The plugin uses the [´DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
+The plugin uses the [`DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
 to look up the AWS credentials.
 
 
