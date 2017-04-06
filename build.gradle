@@ -45,3 +45,8 @@ pluginBundle {
         }
     }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5-rc-3'
+    distributionType = 'all'
+}
