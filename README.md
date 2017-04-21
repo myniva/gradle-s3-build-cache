@@ -4,7 +4,7 @@
 [![GitHub version](https://badge.fury.io/gh/myniva%2Fgradle-s3-build-cache.svg)](https://badge.fury.io/gh/myniva%2Fgradle-s3-build-cache)
 [![Build status](https://api.travis-ci.org/myniva/gradle-s3-build-cache.svg?branch=develop)](https://travis-ci.org/myniva/gradle-s3-build-cache)
 
-This is a custom Gradle [build cache](https://docs.gradle.org/3.5-rc-2/userguide/build_cache.html)
+This is a custom Gradle [build cache](https://docs.gradle.org/current/userguide/build_cache.html)
 implementation which uses [AWS S3](https://aws.amazon.com/s3/) to store the cache objects.
 
 
@@ -64,7 +64,7 @@ The `buildCache` configuration block might look like this:
 ```
 
 More details about configuring the Gradle build cache can be found in the
-[official Gradle documentation](https://docs.gradle.org/3.5-rc-2/userguide/build_cache.html#sec:build_cache_configure).
+[official Gradle documentation](https://docs.gradle.org/current/userguide/build_cache.html#sec:build_cache_configure).
 
 
 ### AWS credentials
