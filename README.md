@@ -8,6 +8,11 @@ This is a custom Gradle [build cache](https://docs.gradle.org/current/userguide/
 implementation which uses [AWS S3](https://aws.amazon.com/s3/) to store the cache objects.
 
 
+## Compatibility
+
+* Version >= 0.3.0 - Gradle 4.x
+* Version < 0.3.0 - Gradle 3.5
+
 ## Use in your project
 
 Please note that this plugin is not yet ready for production. Feedback though is very welcome.
