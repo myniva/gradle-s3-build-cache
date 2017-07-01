@@ -69,6 +69,7 @@ public class AwsS3BuildCacheService implements BuildCacheService {
 
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       writer.writeTo(os);
+      meta.setContentLength(os.size());
       try (InputStream is = new ByteArrayInputStream(os.toByteArray())) {
         s3.putObject(bucketName, key.getHashCode(), is, meta);
       }
