@@ -11,7 +11,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.gradle.plugin-publish'
 
 group = 'ch.myniva.gradle'
-version = '0.2.0'
+version = '0.3.0'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -47,6 +47,6 @@ pluginBundle {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '4.0'
     distributionType = 'all'
 }

@@ -33,13 +33,13 @@ import org.slf4j.LoggerFactory;
 
 public class AwsS3BuildCacheService implements BuildCacheService {
 
-  static final String BUILD_CACHE_CONTENT_TYPE = "application/vnd.gradle.build-cache-artifact";
+  private static final String BUILD_CACHE_CONTENT_TYPE = "application/vnd.gradle.build-cache-artifact";
   private static final Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheService.class);
 
   private final AmazonS3 s3;
   private final String bucketName;
 
-  public AwsS3BuildCacheService(AmazonS3 s3, String bucketName) {
+  AwsS3BuildCacheService(AmazonS3 s3, String bucketName) {
     this.s3 = s3;
     this.bucketName = bucketName;
   }
@@ -69,17 +69,13 @@ public class AwsS3BuildCacheService implements BuildCacheService {
 
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       writer.writeTo(os);
+      meta.setContentLength(os.size());
       try (InputStream is = new ByteArrayInputStream(os.toByteArray())) {
         s3.putObject(bucketName, key.getHashCode(), is, meta);
       }
     } catch (IOException e) {
       throw new BuildCacheException("Error while storing cache object in S3 bucket", e);
     }
-  }
-
-  @Override
-  public String getDescription() {
-    return String.format("AWS S3 Build Cache (%s)", bucketName);
   }
 
   @Override
