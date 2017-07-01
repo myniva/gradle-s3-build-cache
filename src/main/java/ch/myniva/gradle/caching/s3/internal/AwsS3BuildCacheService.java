@@ -78,11 +78,6 @@ public class AwsS3BuildCacheService implements BuildCacheService {
   }
 
   @Override
-  public String getDescription() {
-    return String.format("AWS S3 Build Cache (%s)", bucketName);
-  }
-
-  @Override
   public void close() throws IOException {
     // The AWS S3 client does not need to be closed
   }

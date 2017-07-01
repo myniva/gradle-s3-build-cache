@@ -33,8 +33,13 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
   private static final Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheServiceFactory.class);
 
   @Override
-  public BuildCacheService createBuildCacheService(AwsS3BuildCache config) {
+  public BuildCacheService createBuildCacheService(AwsS3BuildCache config, Describer describer) {
     logger.debug("Start creating S3 build cache service");
+
+    describer
+        .type("AWS S3")
+        .config("AWS region", config.getRegion())
+        .config("Bucket", config.getBucket());
 
     verifyConfig(config);
     AmazonS3 s3 = createS3Client(config);
