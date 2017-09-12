@@ -18,11 +18,14 @@ package ch.myniva.gradle.caching.s3.internal;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.amazonaws.services.s3.model.StorageClass;
 import org.gradle.caching.BuildCacheEntryReader;
 import org.gradle.caching.BuildCacheEntryWriter;
 import org.gradle.caching.BuildCacheException;
@@ -38,10 +41,12 @@ public class AwsS3BuildCacheService implements BuildCacheService {
 
   private final AmazonS3 s3;
   private final String bucketName;
+  private final boolean reducedRedundancy;
 
-  AwsS3BuildCacheService(AmazonS3 s3, String bucketName) {
+  AwsS3BuildCacheService(AmazonS3 s3, String bucketName, boolean reducedRedundancy) {
     this.s3 = s3;
     this.bucketName = bucketName;
+    this.reducedRedundancy = reducedRedundancy;
   }
 
   @Override
@@ -71,11 +76,19 @@ public class AwsS3BuildCacheService implements BuildCacheService {
       writer.writeTo(os);
       meta.setContentLength(os.size());
       try (InputStream is = new ByteArrayInputStream(os.toByteArray())) {
-        s3.putObject(bucketName, key.getHashCode(), is, meta);
+          PutObjectRequest request = getPutObjectRequest(key, meta, is);
+          if(this.reducedRedundancy) {
+            request.withStorageClass(StorageClass.ReducedRedundancy);
+          }
+          s3.putObject(request);
       }
     } catch (IOException e) {
       throw new BuildCacheException("Error while storing cache object in S3 bucket", e);
     }
+  }
+
+  protected PutObjectRequest getPutObjectRequest(BuildCacheKey key, ObjectMetadata meta, InputStream is) {
+    return new PutObjectRequest(bucketName, key.getHashCode(), is, meta);
   }
 
   @Override

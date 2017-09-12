@@ -47,15 +47,6 @@ public class AwsS3BuildCacheServiceFactoryTest {
     subject.createBuildCacheService(conf, buildCacheDescriber);
   }
 
-  @Test(expected = GradleException.class)
-  public void testIllegalConfigWithInvalidRegion() throws Exception {
-    AwsS3BuildCache conf = new AwsS3BuildCache();
-    conf.setRegion("not-a-valid-aws-region");
-    conf.setBucket("my-bucket");
-
-    subject.createBuildCacheService(conf, buildCacheDescriber);
-  }
-
   private class NoopBuildCacheDescriber implements Describer {
 
     @Override
