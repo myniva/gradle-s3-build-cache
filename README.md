@@ -46,6 +46,7 @@ The AWS S3 build cache implementation requires two configuration options:
 | ----------------- | ----------- |
 | region | The AWS region the S3 bucket is located in. |
 | bucket | The name of the AWS S3 bucket where cache objects should be stored. |
+| reducedRedundancy | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). Enabled by default. |
 
 
 The `buildCache` configuration block might look like this:
