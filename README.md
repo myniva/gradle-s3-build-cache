@@ -40,13 +40,15 @@ buildscript {
 
 ### Configuration
 
-The AWS S3 build cache implementation requires two configuration options:
+The AWS S3 build cache implementation has a few configuration options:
 
-| Configuration Key | Description |
-| ----------------- | ----------- |
-| region | The AWS region the S3 bucket is located in. |
-| bucket | The name of the AWS S3 bucket where cache objects should be stored. |
-| reducedRedundancy | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). Enabled by default. |
+| Configuration Key | Description | Default Value |
+| ----------------- | ----------- | ----------- |
+| region | The AWS region the S3 bucket is located in. | |
+| bucket | The name of the AWS S3 bucket where cache objects should be stored. | |
+| reducedRedundancy | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). | true |
+
+(Options without a default value are mandatory.)
 
 
 The `buildCache` configuration block might look like this:
