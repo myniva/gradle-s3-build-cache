@@ -19,9 +19,9 @@ package ch.myniva.gradle.caching.s3;
 import org.gradle.caching.configuration.AbstractBuildCache;
 
 public class AwsS3BuildCache extends AbstractBuildCache {
-
   private String region;
   private String bucket;
+  private boolean reducedRedundancy = true;
 
   public String getRegion() {
     return region;
@@ -37,5 +37,13 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setBucket(String bucket) {
     this.bucket = bucket;
+  }
+
+  public boolean isReducedRedundancy() {
+    return reducedRedundancy;
+  }
+
+  public void setReducedRedundancy(boolean reducedRedundancy) {
+    this.reducedRedundancy = reducedRedundancy;
   }
 }

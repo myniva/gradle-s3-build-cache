@@ -44,7 +44,7 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
     verifyConfig(config);
     AmazonS3 s3 = createS3Client(config);
 
-    return new AwsS3BuildCacheService(s3, config.getBucket());
+    return new AwsS3BuildCacheService(s3, config.getBucket(), config.isReducedRedundancy());
   }
 
   private void verifyConfig(AwsS3BuildCache config) {
