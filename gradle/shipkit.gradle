@@ -1,0 +1,13 @@
+shipkit {
+    gitHub.repository = 'myniva/gradle-s3-build-cache'
+    gitHub.readOnlyAuthToken = '7e8e78338bbe259cbda185392fa2fe1e03743e33'
+    gitHub.writeAuthToken = System.getenv('GH_WRITE_TOKEN')
+
+    git.user = 'Basil Brunner'
+    git.email = 'myniva@mailbox.org'
+
+    team.developers = ['myniva:Basil Brunner']
+    team.contributors = ['antillean:Kamal']
+
+    releaseNotes.publicationRepository = 'https://plugins.gradle.org/plugin/ch.myniva.s3-build-cache'
+}

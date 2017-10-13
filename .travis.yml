@@ -1,5 +1,9 @@
 language: java
 
+script:
+  - ./gradlew check -s
+  - ./gradlew ciPerformRelease -s
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
