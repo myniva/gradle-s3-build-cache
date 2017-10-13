@@ -1,6 +1,6 @@
 shipkit {
     gitHub.repository = 'myniva/gradle-s3-build-cache'
-    gitHub.readOnlyAuthToken = '7e8e78338bbe259cbda185392fa2fe1e03743e33'
+    gitHub.readOnlyAuthToken = 'ab42092bbcb17092fe465f43129f819466f5362f'
     gitHub.writeAuthToken = System.getenv('GH_WRITE_TOKEN')
 
     git.user = 'Basil Brunner'
