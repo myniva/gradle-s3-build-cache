@@ -7,7 +7,6 @@ shipkit {
     git.email = 'myniva@mailbox.org'
 
     team.developers = ['myniva:Basil Brunner']
-    team.contributors = ['antillean:Kamal']
 
     releaseNotes.publicationRepository = 'https://plugins.gradle.org/plugin/ch.myniva.s3-build-cache'
 }
