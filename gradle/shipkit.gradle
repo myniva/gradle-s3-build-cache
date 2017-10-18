@@ -20,7 +20,7 @@ allprojects {
 
                 userOrg = 'basilbrunner'
                 name = 'ch.myniva.s3-build-cache'
-                licenses = ['Apache License 2.0']
+                licenses = ['Apache-2.0']
                 labels = ['gradle', 'build-cache']
                 publish = true
             }
