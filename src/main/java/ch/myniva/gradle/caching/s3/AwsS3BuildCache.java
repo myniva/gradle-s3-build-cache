@@ -22,6 +22,7 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   private String region;
   private String bucket;
   private boolean reducedRedundancy = true;
+  private String endpoint;
 
   public String getRegion() {
     return region;
@@ -45,5 +46,13 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setReducedRedundancy(boolean reducedRedundancy) {
     this.reducedRedundancy = reducedRedundancy;
+  }
+
+  public String getEndpoint() {
+    return endpoint;
+  }
+
+  public void setEndpoint(String endpoint) {
+    this.endpoint = endpoint;
   }
 }

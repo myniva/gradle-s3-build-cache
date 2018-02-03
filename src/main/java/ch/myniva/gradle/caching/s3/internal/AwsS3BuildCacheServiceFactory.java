@@ -18,15 +18,18 @@ package ch.myniva.gradle.caching.s3.internal;
 
 import static com.amazonaws.util.StringUtils.isNullOrEmpty;
 
-import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import org.gradle.api.GradleException;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
 
 public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<AwsS3BuildCache> {
 
@@ -38,8 +41,10 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
 
     describer
         .type("AWS S3")
-        .config("AWS region", config.getRegion())
-        .config("Bucket", config.getBucket());
+        .config("Region", config.getRegion())
+        .config("Bucket", config.getBucket())
+        .config("Reduced Redundancy", String.valueOf(config.isReducedRedundancy()))
+        .config("Endpoint", config.getEndpoint());
 
     verifyConfig(config);
     AmazonS3 s3 = createS3Client(config);
@@ -59,10 +64,17 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
   private AmazonS3 createS3Client(AwsS3BuildCache config) {
     AmazonS3 s3;
     try {
-      s3 = AmazonS3ClientBuilder
-          .standard()
-          .withRegion(config.getRegion())
-          .build();
+      if (isNullOrEmpty(config.getEndpoint())) {
+        s3 = AmazonS3ClientBuilder
+                .standard()
+                .withRegion(config.getRegion())
+                .build();
+      } else {
+        s3 = AmazonS3ClientBuilder
+                .standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(config.getEndpoint(), config.getRegion()))
+                .build();
+      }
     } catch (SdkClientException e) {
       logger.debug("Error while building AWS S3 client: {}", e.getMessage());
       throw new GradleException("Creation of S3 build cache failed; cannot create S3 client", e);
