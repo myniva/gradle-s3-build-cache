@@ -2,7 +2,7 @@
 
 #### 0.5.0
  - 2018-02-03 - [3 commits](https://github.com/myniva/gradle-s3-build-cache/compare/v0.4.1...v0.5.0) by [Basil Brunner](https://github.com/myniva) - published to [![Bintray](https://img.shields.io/badge/Bintray-0.5.0-green.svg)](https://plugins.gradle.org/plugin/ch.myniva.s3-build-cache0.5.0)
- - No pull requests referenced in commit messages.
+ - Add support for alternative S3 endpoints [(#8)](https://github.com/myniva/gradle-s3-build-cache/issues/8)
 
 **0.4.1 (2017-10-18)** - [1 commit](https://github.com/myniva/gradle-s3-build-cache/compare/v0.4.0...v0.4.1) by [Basil Brunner](http://github.com/myniva) - published to [![Bintray](https://img.shields.io/badge/Bintray-0.4.1-green.svg)](https://plugins.gradle.org/plugin/ch.myniva.s3-build-cache/0.4.1)
  - No pull requests referenced in commit messages.
