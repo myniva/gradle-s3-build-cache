@@ -23,7 +23,7 @@ have an idea for an improvement.
 ### Apply plugin
 
 The Gradle build cache needs to be configured on the Settings level. As a first step, add a
-dependency to the plugin to your `settings.gradle` file:
+dependency to the plugin to your `settings.gradle` file. Get the latest version from [Gradle plugin portal](https://plugins.gradle.org/plugin/ch.myniva.s3-build-cache).
 
 ```
 buildscript {
@@ -33,7 +33,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.ch.myniva.gradle:s3-build-cache:0.1.0"
+    classpath "gradle.plugin.ch.myniva.gradle:s3-build-cache:<version>"
   }
 }
 ```
@@ -79,20 +79,6 @@ More details about configuring the Gradle build cache can be found in the
 
 The plugin uses the [`DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
 to look up the AWS credentials.
-
-
-### Run build with build cache
-
-The Gradle build cache is an incubating feature and needs to be enabled per build (`--build-cache`)
-or in the Gradle properties (`org.gradle.caching=true`).
-
-Example:
-
-```
-$> gradle --build-cache assemble
-Build cache is an incubating feature.
-Using AWS S3 Build Cache (your-bucket) as remote build cache, push is enabled.
-```
 
 
 ## Contributing
