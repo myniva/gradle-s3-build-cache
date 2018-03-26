@@ -21,6 +21,7 @@ import org.gradle.caching.configuration.AbstractBuildCache;
 public class AwsS3BuildCache extends AbstractBuildCache {
   private String region;
   private String bucket;
+  private String path;
   private boolean reducedRedundancy = true;
   private String endpoint;
 
@@ -38,6 +39,14 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setBucket(String bucket) {
     this.bucket = bucket;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public boolean isReducedRedundancy() {

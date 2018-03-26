@@ -48,41 +48,57 @@ public class AwsS3BuildCacheServiceTest {
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
+    doReturn("abcdefghijkl123456789").when(key).getHashCode();
   }
 
   @Test
   public void storePutsObjectAndUsesReducedRedundancyWhenConfigured() throws IOException {
     /** Setup **/
-    buildCacheService = spy(new AwsS3BuildCacheService(s3, "bucketName", true));
-    doReturn(putObjectRequest).when(buildCacheService).getPutObjectRequest(any(BuildCacheKey.class),
+    buildCacheService = spy(new AwsS3BuildCacheService(s3, "bucketName", null, true));
+    doReturn(putObjectRequest).when(buildCacheService).getPutObjectRequest(any(String.class),
             any(ObjectMetadata.class), any(InputStream.class));
 
     /** Run **/
     buildCacheService.store(key, writer);
 
     /** Check **/
-    verifyThatStoreStores();
+    verifyThatStoreStores("abcdefghijkl123456789");
     verify(putObjectRequest).withStorageClass(eq(StorageClass.ReducedRedundancy));
   }
 
   @Test
   public void storePutsObjectAndDoesNotUseReducedRedundancyWhenConfigured() throws IOException {
     /** Setup **/
-    buildCacheService = spy(new AwsS3BuildCacheService(s3, "bucketName", false));
-    doReturn(putObjectRequest).when(buildCacheService).getPutObjectRequest(any(BuildCacheKey.class),
+    buildCacheService = spy(new AwsS3BuildCacheService(s3, "bucketName", null, false));
+    doReturn(putObjectRequest).when(buildCacheService).getPutObjectRequest(any(String.class),
             any(ObjectMetadata.class), any(InputStream.class));
 
     /** Run **/
     buildCacheService.store(key, writer);
 
     /** Check **/
-    verifyThatStoreStores();
+    verifyThatStoreStores("abcdefghijkl123456789");
     verify(putObjectRequest, never()).withStorageClass(eq(StorageClass.ReducedRedundancy));
   }
 
-  private void verifyThatStoreStores() throws IOException {
+  @Test
+  public void storePutsObjectAndUsesPathWhenConfigured() throws IOException {
+    /** Setup **/
+    buildCacheService = spy(new AwsS3BuildCacheService(s3, "bucketName", "cache", false));
+    doReturn(putObjectRequest).when(buildCacheService).getPutObjectRequest(eq("cache/abcdefghijkl123456789"),
+            any(ObjectMetadata.class), any(InputStream.class));
+
+    /** Run **/
+    buildCacheService.store(key, writer);
+
+    /** Check **/
+    verifyThatStoreStores("cache/abcdefghijkl123456789");
+    verify(putObjectRequest, never()).withStorageClass(eq(StorageClass.ReducedRedundancy));
+  }
+
+  private void verifyThatStoreStores(String bucketPath) throws IOException {
     verify(writer).writeTo(any(ByteArrayOutputStream.class));
-    verify(buildCacheService).getPutObjectRequest(eq(key), any(ObjectMetadata.class), any(InputStream.class));
+    verify(buildCacheService).getPutObjectRequest(eq(bucketPath), any(ObjectMetadata.class), any(InputStream.class));
     verify(s3).putObject(eq(putObjectRequest));
   }
 }
