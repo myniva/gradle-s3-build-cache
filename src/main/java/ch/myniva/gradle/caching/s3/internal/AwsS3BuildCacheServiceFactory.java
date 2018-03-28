@@ -43,8 +43,11 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
         .type("AWS S3")
         .config("Region", config.getRegion())
         .config("Bucket", config.getBucket())
-        .config("Reduced Redundancy", String.valueOf(config.isReducedRedundancy()))
-        .config("Endpoint", config.getEndpoint());
+        .config("Reduced Redundancy", String.valueOf(config.isReducedRedundancy()));
+
+    if (config.getEndpoint() != null) {
+      describer.config("Endpoint", config.getEndpoint());
+    }
 
     verifyConfig(config);
     AmazonS3 s3 = createS3Client(config);
