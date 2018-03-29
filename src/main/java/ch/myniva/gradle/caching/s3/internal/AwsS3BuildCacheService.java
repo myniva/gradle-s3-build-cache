@@ -41,19 +41,29 @@ public class AwsS3BuildCacheService implements BuildCacheService {
 
   private final AmazonS3 s3;
   private final String bucketName;
+  private final String path;
   private final boolean reducedRedundancy;
 
-  AwsS3BuildCacheService(AmazonS3 s3, String bucketName, boolean reducedRedundancy) {
+  AwsS3BuildCacheService(AmazonS3 s3, String bucketName, String path, boolean reducedRedundancy) {
     this.s3 = s3;
     this.bucketName = bucketName;
+    this.path = path;
     this.reducedRedundancy = reducedRedundancy;
+  }
+
+  private String getBucketPath(BuildCacheKey key) {
+    if (path == null || path.length() == 0) {
+      return key.getHashCode();
+    }
+    return (path+"/"+key.getHashCode()).replaceAll("[/]+", "/");
   }
 
   @Override
   public boolean load(BuildCacheKey key, BuildCacheEntryReader reader) {
-    if (s3.doesObjectExist(bucketName, key.getHashCode())) {
-      logger.info("Found cache item '{}' in S3 bucket", key.getHashCode());
-      S3Object object = s3.getObject(bucketName, key.getHashCode());
+    final String bucketPath = getBucketPath(key);
+    if (s3.doesObjectExist(bucketName, bucketPath)) {
+      logger.info("Found cache item '{}' in S3 bucket", bucketPath);
+      S3Object object = s3.getObject(bucketName, bucketPath);
       try (InputStream is = object.getObjectContent()) {
         reader.readFrom(is);
         return true;
@@ -61,14 +71,15 @@ public class AwsS3BuildCacheService implements BuildCacheService {
         throw new BuildCacheException("Error while reading cache object from S3 bucket", e);
       }
     } else {
-      logger.info("Did not find cache item '{}' in S3 bucket", key.getHashCode());
+      logger.info("Did not find cache item '{}' in S3 bucket", bucketPath);
       return false;
     }
   }
 
   @Override
   public void store(BuildCacheKey key, BuildCacheEntryWriter writer) {
-    logger.info("Start storing cache entry '{}' in S3 bucket", key.getHashCode());
+    final String bucketPath = getBucketPath(key);
+    logger.info("Start storing cache entry '{}' in S3 bucket", bucketPath);
     ObjectMetadata meta = new ObjectMetadata();
     meta.setContentType(BUILD_CACHE_CONTENT_TYPE);
 
@@ -76,7 +87,7 @@ public class AwsS3BuildCacheService implements BuildCacheService {
       writer.writeTo(os);
       meta.setContentLength(os.size());
       try (InputStream is = new ByteArrayInputStream(os.toByteArray())) {
-          PutObjectRequest request = getPutObjectRequest(key, meta, is);
+          PutObjectRequest request = getPutObjectRequest(bucketPath, meta, is);
           if(this.reducedRedundancy) {
             request.withStorageClass(StorageClass.ReducedRedundancy);
           }
@@ -87,8 +98,8 @@ public class AwsS3BuildCacheService implements BuildCacheService {
     }
   }
 
-  protected PutObjectRequest getPutObjectRequest(BuildCacheKey key, ObjectMetadata meta, InputStream is) {
-    return new PutObjectRequest(bucketName, key.getHashCode(), is, meta);
+  protected PutObjectRequest getPutObjectRequest(String bucketPath, ObjectMetadata meta, InputStream is) {
+    return new PutObjectRequest(bucketName, bucketPath, is, meta);
   }
 
   @Override

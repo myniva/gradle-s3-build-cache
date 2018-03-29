@@ -19,7 +19,6 @@ package ch.myniva.gradle.caching.s3.internal;
 import static org.junit.Assert.assertNotNull;
 
 import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
-import org.gradle.api.GradleException;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory.Describer;
 import org.junit.Before;
@@ -41,6 +40,18 @@ public class AwsS3BuildCacheServiceFactoryTest {
     AwsS3BuildCache conf = new AwsS3BuildCache();
     conf.setRegion("us-west-1");
     conf.setBucket("my-bucket");
+
+    BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
+
+    assertNotNull(service);
+  }
+
+  @Test
+  public void testPath() {
+    AwsS3BuildCache conf = new AwsS3BuildCache();
+    conf.setRegion("us-west-1");
+    conf.setBucket("my-bucket");
+    conf.setPath("cache");
 
     BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
 

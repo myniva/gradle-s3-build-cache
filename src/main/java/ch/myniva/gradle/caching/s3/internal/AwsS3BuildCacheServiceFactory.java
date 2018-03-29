@@ -45,6 +45,10 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
         .config("Bucket", config.getBucket())
         .config("Reduced Redundancy", String.valueOf(config.isReducedRedundancy()));
 
+    if (config.getPath() != null) {
+      describer.config("Path", config.getPath());
+    }
+
     if (config.getEndpoint() != null) {
       describer.config("Endpoint", config.getEndpoint());
     }
@@ -52,7 +56,7 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
     verifyConfig(config);
     AmazonS3 s3 = createS3Client(config);
 
-    return new AwsS3BuildCacheService(s3, config.getBucket(), config.isReducedRedundancy());
+    return new AwsS3BuildCacheService(s3, config.getBucket(), config.getPath(), config.isReducedRedundancy());
   }
 
   private void verifyConfig(AwsS3BuildCache config) {
