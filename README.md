@@ -80,6 +80,29 @@ More details about configuring the Gradle build cache can be found in the
 The plugin uses the [`DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
 to look up the AWS credentials.
 
+### S3 Bucket Permissions
+
+The AWS credential must have at least the following permissions to the bucket:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+      ],
+      "Resource": [
+          "arn:aws:s3:::your-bucket/*",
+          "arn:aws:s3:::your-bucket"
+      ]
+    }
+  ]
+}
+```
 
 ## Contributing
 
