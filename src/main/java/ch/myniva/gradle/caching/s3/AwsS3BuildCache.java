@@ -24,6 +24,8 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   private String path;
   private boolean reducedRedundancy = true;
   private String endpoint;
+  private String awsAccessKeyId;
+  private String awsSecretKey;
 
   public String getRegion() {
     return region;
@@ -63,5 +65,21 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setEndpoint(String endpoint) {
     this.endpoint = endpoint;
+  }
+
+  public String getAwsAccessKeyId() {
+    return awsAccessKeyId;
+  }
+
+  public void setAwsAccessKeyId(String awsAccessKeyId) {
+    this.awsAccessKeyId = awsAccessKeyId;
+  }
+
+  public String getAwsSecretKey() {
+    return awsSecretKey;
+  }
+
+  public void setAwsSecretKey(String awsSecretKey) {
+    this.awsSecretKey = awsSecretKey;
   }
 }

@@ -49,6 +49,8 @@ The AWS S3 build cache implementation has a few configuration options:
 | `path` | The path under which all cache objects should be stored. | no | |
 | `reducedRedundancy` | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). | no | true |
 | `endpoint` | Alternative S3 compatible endpoint | no | |
+| `awsAccessKeyId` | The AWS access key id | no | from DefaultAWSCredentialsProviderChain |
+| `awsSecretKey` | The AWS secret key | no | from DefaultAWSCredentialsProviderChain |
 
 
 The `buildCache` configuration block might look like this:
@@ -79,6 +81,8 @@ More details about configuring the Gradle build cache can be found in the
 
 The plugin uses the [`DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
 to look up the AWS credentials.
+If you want to override the credentials feel free to set `awsAccessKeyId` and `awsSecretKey` and the plugin will ignore
+`DefaultAWSCredentialsProviderChain`.
 
 ### S3 Bucket Permissions
 
