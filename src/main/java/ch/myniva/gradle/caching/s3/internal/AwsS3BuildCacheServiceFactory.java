@@ -74,7 +74,7 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
     AmazonS3 s3;
     try {
       AmazonS3ClientBuilder s3Builder = AmazonS3ClientBuilder.standard();
-      if (config.getAwsAccessKeyId() != null && config.getAwsSecretKey() != null) {
+      if (!isNullOrEmpty(config.getAwsAccessKeyId()) && !isNullOrEmpty(config.getAwsSecretKey())) {
         s3Builder.withCredentials(new AWSStaticCredentialsProvider(
             new BasicAWSCredentials(config.getAwsAccessKeyId(), config.getAwsSecretKey())));
       }
