@@ -16,20 +16,22 @@
 
 package ch.myniva.gradle.caching.s3.internal;
 
-import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
+import static com.amazonaws.util.StringUtils.isNullOrEmpty;
+
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import org.gradle.api.GradleException;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.amazonaws.util.StringUtils.isNullOrEmpty;
+import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
 
 public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<AwsS3BuildCache> {
 
