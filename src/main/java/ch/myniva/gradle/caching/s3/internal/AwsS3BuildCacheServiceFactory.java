@@ -18,13 +18,14 @@ package ch.myniva.gradle.caching.s3.internal;
 
 import static com.amazonaws.util.StringUtils.isNullOrEmpty;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
+import java.util.Map;
 import org.gradle.api.GradleException;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory;
@@ -78,6 +79,9 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
         s3Builder.withCredentials(new AWSStaticCredentialsProvider(
             new BasicAWSCredentials(config.getAwsAccessKeyId(), config.getAwsSecretKey())));
       }
+
+      addHttpHeaders(s3Builder, config);
+
       if (isNullOrEmpty(config.getEndpoint())) {
         s3Builder.withRegion(config.getRegion());
       } else {
@@ -90,5 +94,18 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
       throw new GradleException("Creation of S3 build cache failed; cannot create S3 client", e);
     }
     return s3;
+  }
+
+  private void addHttpHeaders(final AmazonS3ClientBuilder s3Builder, final AwsS3BuildCache config) {
+    final Map<String, String> headers = config.getHeaders();
+    if (headers != null) {
+      final ClientConfiguration clientConfiguration = new ClientConfiguration();
+      for (Map.Entry<String, String> header : headers.entrySet()) {
+        if(header.getKey()!= null && header.getValue() != null) {
+          clientConfiguration.addHeader(header.getKey(), header.getValue());
+        }
+      }
+      s3Builder.setClientConfiguration(clientConfiguration);
+    }
   }
 }

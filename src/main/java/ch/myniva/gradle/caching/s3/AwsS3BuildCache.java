@@ -16,6 +16,7 @@
 
 package ch.myniva.gradle.caching.s3;
 
+import java.util.Map;
 import org.gradle.caching.configuration.AbstractBuildCache;
 
 public class AwsS3BuildCache extends AbstractBuildCache {
@@ -24,6 +25,7 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   private String path;
   private boolean reducedRedundancy = true;
   private String endpoint;
+  private Map<String, String> headers;
   private String awsAccessKeyId;
   private String awsSecretKey;
 
@@ -66,6 +68,10 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   public void setEndpoint(String endpoint) {
     this.endpoint = endpoint;
   }
+
+  public Map<String, String> getHeaders() { return headers; }
+
+  public void setHeaders(final Map<String, String> headers) { this.headers = headers; }
 
   public String getAwsAccessKeyId() {
     return awsAccessKeyId;
