@@ -101,7 +101,7 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
     if (headers != null) {
       final ClientConfiguration clientConfiguration = new ClientConfiguration();
       for (Map.Entry<String, String> header : headers.entrySet()) {
-        if(header.getKey()!= null && header.getValue() != null) {
+        if(header.getKey() != null && header.getValue() != null) {
           clientConfiguration.addHeader(header.getKey(), header.getValue());
         }
       }
