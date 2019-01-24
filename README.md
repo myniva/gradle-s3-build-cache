@@ -49,7 +49,7 @@ The AWS S3 build cache implementation has a few configuration options:
 | `path` | The path under which all cache objects should be stored. | no | |
 | `reducedRedundancy` | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). | no | true |
 | `endpoint` | Alternative S3 compatible endpoint | no | |
-| `headers` | A map with HTTP headers to be added to each request (nulls are ignored) | no | |
+| `headers` | A map with HTTP headers to be added to each request (nulls are ignored). e.g. `[ 'x-header-name': 'header-value' ]` | no | |
 | `awsAccessKeyId` | The AWS access key id | no | from DefaultAWSCredentialsProviderChain |
 | `awsSecretKey` | The AWS secret key | no | from DefaultAWSCredentialsProviderChain |
 
@@ -69,7 +69,6 @@ The `buildCache` configuration block might look like this:
          region = 'eu-west-1'
          bucket = 'your-bucket'
          push = isCiServer
-         headers = [ 'x-header-name': 'header-value' ]
      }
  }
 
