@@ -19,6 +19,8 @@ package ch.myniva.gradle.caching.s3.internal;
 import static org.junit.Assert.assertNotNull;
 
 import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradle.caching.BuildCacheService;
 import org.gradle.caching.BuildCacheServiceFactory.Describer;
 import org.junit.Before;
@@ -52,6 +54,49 @@ public class AwsS3BuildCacheServiceFactoryTest {
     conf.setRegion("us-west-1");
     conf.setBucket("my-bucket");
     conf.setPath("cache");
+
+    BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
+
+    assertNotNull(service);
+  }
+
+  @Test
+  public void testNullHeaders() {
+    AwsS3BuildCache conf = new AwsS3BuildCache();
+    conf.setRegion("us-west-1");
+    conf.setBucket("my-bucket");
+    conf.setHeaders(null);
+
+    BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
+
+    assertNotNull(service);
+  }
+
+
+  @Test
+  public void testNullHeaderName() {
+    AwsS3BuildCache conf = new AwsS3BuildCache();
+    conf.setRegion("us-west-1");
+    conf.setBucket("my-bucket");
+    Map<String, String> headers = new HashMap<String, String>(){{
+      put(null, "foo");
+    }};
+    conf.setHeaders(headers);
+
+    BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
+
+    assertNotNull(service);
+  }
+
+  @Test
+  public void testNullHeaderValue() {
+    AwsS3BuildCache conf = new AwsS3BuildCache();
+    conf.setRegion("us-west-1");
+    conf.setBucket("my-bucket");
+    Map<String, String> headers = new HashMap<String, String>(){{
+      put("x-foo", null);
+    }};
+    conf.setHeaders(headers);
 
     BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
 
