@@ -22,6 +22,7 @@ import com.amazonaws.ClientConfiguration;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -75,7 +76,12 @@ public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<A
     AmazonS3 s3;
     try {
       AmazonS3ClientBuilder s3Builder = AmazonS3ClientBuilder.standard();
-      if (!isNullOrEmpty(config.getAwsAccessKeyId()) && !isNullOrEmpty(config.getAwsSecretKey())) {
+      if (!isNullOrEmpty(config.getAwsAccessKeyId()) && !isNullOrEmpty(config.getAwsSecretKey()) &&
+                !isNullOrEmpty(config.getSessionToken())) {
+            s3Builder.withCredentials(new AWSStaticCredentialsProvider(
+                    new BasicSessionCredentials(config.getAwsAccessKeyId(), config.getAwsSecretKey(),
+                            config.getSessionToken())));
+      } else if (!isNullOrEmpty(config.getAwsAccessKeyId()) && !isNullOrEmpty(config.getAwsSecretKey())) {
         s3Builder.withCredentials(new AWSStaticCredentialsProvider(
             new BasicAWSCredentials(config.getAwsAccessKeyId(), config.getAwsSecretKey())));
       }

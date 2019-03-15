@@ -29,6 +29,7 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   private Map<String, String> headers;
   private String awsAccessKeyId;
   private String awsSecretKey;
+  private String sessionToken;
 
   public String getRegion() {
     return region;
@@ -92,5 +93,13 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setAwsSecretKey(String awsSecretKey) {
     this.awsSecretKey = awsSecretKey;
+  }
+
+  public String getSessionToken() {
+    return sessionToken;
+  }
+
+  public void setSessionToken(String sessionToken) {
+    this.sessionToken = sessionToken;
   }
 }

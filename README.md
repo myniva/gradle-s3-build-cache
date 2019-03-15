@@ -53,6 +53,7 @@ The AWS S3 build cache implementation has a few configuration options:
 | `headers` | A map with HTTP headers to be added to each request (nulls are ignored). e.g. `[ 'x-header-name': 'header-value' ]` | no | |
 | `awsAccessKeyId` | The AWS access key id | no | from DefaultAWSCredentialsProviderChain |
 | `awsSecretKey` | The AWS secret key | no | from DefaultAWSCredentialsProviderChain |
+| `sessionToken` | The AWS sessionToken when you use temporal credentials | no | from DefaultAWSCredentialsProviderChain |
 
 
 The `buildCache` configuration block might look like this:
@@ -83,8 +84,8 @@ More details about configuring the Gradle build cache can be found in the
 
 The plugin uses the [`DefaultAWSCredentialsProviderChain`](http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html)
 to look up the AWS credentials.
-If you want to override the credentials feel free to set `awsAccessKeyId` and `awsSecretKey` and the plugin will ignore
-`DefaultAWSCredentialsProviderChain`.
+If you want to override the credentials feel free to set `awsAccessKeyId` and `awsSecretKey` and (optionally depends on
+configuration) `sessionToken`. If they are set the plugin will ignore `DefaultAWSCredentialsProviderChain`.
 
 ### S3 Bucket Permissions
 

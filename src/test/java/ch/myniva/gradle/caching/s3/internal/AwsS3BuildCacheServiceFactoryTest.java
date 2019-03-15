@@ -119,6 +119,20 @@ public class AwsS3BuildCacheServiceFactoryTest {
     subject.createBuildCacheService(conf, buildCacheDescriber);
   }
 
+  @Test
+  public void testAddAWSSessionCredentials() throws Exception {
+    AwsS3BuildCache conf = new AwsS3BuildCache();
+    conf.setBucket("my-bucket");
+    conf.setRegion("us-west-1");
+    conf.setAwsAccessKeyId("any aws access key");
+    conf.setAwsSecretKey("any secret key");
+    conf.setSessionToken("any session token");
+
+    BuildCacheService service = subject.createBuildCacheService(conf, buildCacheDescriber);
+
+    assertNotNull(service);
+  }
+
   private class NoopBuildCacheDescriber implements Describer {
 
     @Override
