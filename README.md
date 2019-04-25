@@ -111,6 +111,11 @@ The AWS credential must have at least the following permissions to the bucket:
 }
 ```
 
+### Expiring cache entries
+
+This plugin does not deal with expiring cache entries directly but relies on S3 object lifecycle management to do so.
+Cache entry expiration rules can be set on S3 buckets using [AWS API](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTlifecycle.html) or via [AWS Management Console](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-lifecycle.html).
+
 ## Contributing
 
 Contributions are always welcome! If you'd like to contribute (and we hope you do) please open a pull request.
