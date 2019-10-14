@@ -16,13 +16,18 @@
 
 package ch.myniva.gradle.caching.s3.internal;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.StorageClass;
+import org.gradle.caching.BuildCacheEntryReader;
 import org.gradle.caching.BuildCacheEntryWriter;
 import org.gradle.caching.BuildCacheKey;
 import org.junit.Before;
@@ -39,6 +44,8 @@ public class AwsS3BuildCacheServiceTest {
   @Mock
   BuildCacheKey key;
   @Mock
+  BuildCacheEntryReader reader;
+  @Mock
   BuildCacheEntryWriter writer;
   @Mock
   PutObjectRequest putObjectRequest = mock(PutObjectRequest.class);
@@ -49,6 +56,37 @@ public class AwsS3BuildCacheServiceTest {
   public void setup() {
     MockitoAnnotations.initMocks(this);
     doReturn("abcdefghijkl123456789").when(key).getHashCode();
+  }
+
+  @Test
+  public void loadGetsObjectsAndReturnsTrueIfItExistsInS3() throws Exception {
+    /** Setup **/
+    buildCacheService = new AwsS3BuildCacheService(s3, "bucketName", null, true);
+    doReturn(true).when(s3).doesObjectExist("bucketName", "abcdefghijkl123456789");
+    S3Object s3Object = mock(S3Object.class);
+    doReturn(s3Object).when(s3).getObject("bucketName", "abcdefghijkl123456789");
+    S3ObjectInputStream s3ObjectInputStream = mock(S3ObjectInputStream.class);
+    doReturn(s3ObjectInputStream).when(s3Object).getObjectContent();
+
+    /** Run **/
+    boolean result = buildCacheService.load(key, reader);
+
+    /** Check **/
+    assertTrue(result);
+    verify(reader).readFrom(s3ObjectInputStream);
+  }
+
+  @Test
+  public void loadReturnsFalseIfItDoesntExistInS3() throws Exception {
+    /** Setup **/
+    buildCacheService = new AwsS3BuildCacheService(s3, "bucketName", null, true);
+    doReturn(false).when(s3).doesObjectExist("bucketName", "abcdefghijkl123456789");
+
+    /** Run **/
+    boolean result = buildCacheService.load(key, reader);
+
+    /** Check **/
+    assertFalse(result);
   }
 
   @Test
