@@ -20,12 +20,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import com.amazonaws.services.s3.model.StorageClass;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.amazonaws.services.s3.model.StorageClass;
 import org.gradle.caching.BuildCacheEntryReader;
 import org.gradle.caching.BuildCacheEntryWriter;
 import org.gradle.caching.BuildCacheException;
@@ -83,10 +84,17 @@ public class AwsS3BuildCacheService implements BuildCacheService {
     ObjectMetadata meta = new ObjectMetadata();
     meta.setContentType(BUILD_CACHE_CONTENT_TYPE);
 
-    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+    File tempOutputFile;
+    try {
+      tempOutputFile = File.createTempFile("gradle-s3-build-cache", ".tmp");
+    } catch (IOException e) {
+      throw new BuildCacheException("Error writing temp file", e);
+    }
+
+    try (FileOutputStream os = new FileOutputStream(tempOutputFile)) {
       writer.writeTo(os);
-      meta.setContentLength(os.size());
-      try (InputStream is = new ByteArrayInputStream(os.toByteArray())) {
+      meta.setContentLength(tempOutputFile.length());
+      try (InputStream is = new FileInputStream(tempOutputFile)) {
           PutObjectRequest request = getPutObjectRequest(bucketPath, meta, is);
           if(this.reducedRedundancy) {
             request.withStorageClass(StorageClass.ReducedRedundancy);
@@ -95,6 +103,8 @@ public class AwsS3BuildCacheService implements BuildCacheService {
       }
     } catch (IOException e) {
       throw new BuildCacheException("Error while storing cache object in S3 bucket", e);
+    } finally {
+      tempOutputFile.delete();
     }
   }
 

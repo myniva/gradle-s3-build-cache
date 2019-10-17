@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -135,7 +135,7 @@ public class AwsS3BuildCacheServiceTest {
   }
 
   private void verifyThatStoreStores(String bucketPath) throws IOException {
-    verify(writer).writeTo(any(ByteArrayOutputStream.class));
+    verify(writer).writeTo(any(OutputStream.class));
     verify(buildCacheService).getPutObjectRequest(eq(bucketPath), any(ObjectMetadata.class), any(InputStream.class));
     verify(s3).putObject(eq(putObjectRequest));
   }
