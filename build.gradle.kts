@@ -2,7 +2,7 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 
 plugins {
     `maven-publish`
-    id("java-gradle-plugin")
+    `kotlin-dsl`
     id("com.gradle.plugin-publish") version "0.9.7"
     id("org.shipkit.java") version "2.3.4"
     id("org.shipkit.gradle-plugin") version "2.3.4"
@@ -17,6 +17,10 @@ group = "ch.myniva.gradle"
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+kotlinDslPluginOptions {
+    experimentalWarning.set(false)
 }
 
 dependencies {
