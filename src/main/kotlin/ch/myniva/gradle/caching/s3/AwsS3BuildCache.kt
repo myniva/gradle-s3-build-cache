@@ -27,4 +27,5 @@ class AwsS3BuildCache : AbstractBuildCache() {
     var awsAccessKeyId: String? = null
     var awsSecretKey: String? = null
     var sessionToken: String? = null
+    var credentialsDiscoverMode: CredentialsDiscoverMode = CredentialsDiscoverMode.AWS_DEFAULT
 }

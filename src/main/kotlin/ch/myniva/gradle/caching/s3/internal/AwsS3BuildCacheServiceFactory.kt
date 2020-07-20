@@ -16,6 +16,7 @@
 package ch.myniva.gradle.caching.s3.internal
 
 import ch.myniva.gradle.caching.s3.AwsS3BuildCache
+import ch.myniva.gradle.caching.s3.CredentialsDiscoverMode.*
 import com.amazonaws.ClientConfiguration
 import com.amazonaws.auth.*
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
@@ -94,7 +95,16 @@ class AwsS3BuildCacheServiceFactory : BuildCacheServiceFactory<AwsS3BuildCache> 
     private fun AmazonS3ClientBuilder.addCredentials(config: AwsS3BuildCache) {
         val credentials =
             if (config.awsAccessKeyId.isNullOrEmpty() || config.awsSecretKey.isNullOrEmpty()) {
-                return
+                when (config.credentialsDiscoverMode) {
+                    AWS_DEFAULT -> return
+                    ANONYMOUS_IF_MISSING -> AWSStaticCredentialsProvider(AnonymousAWSCredentials())
+                    AWS_LOCAL_ONLY -> AWSCredentialsProviderChain(
+                        EnvironmentVariableCredentialsProvider(),
+                        SystemPropertiesCredentialsProvider(),
+                        WebIdentityTokenCredentialsProvider.create(),
+                        ProfileCredentialsProvider()
+                    )
+                }
             } else {
                 AWSStaticCredentialsProvider(
                     if (config.awsAccessKeyId.isNullOrEmpty()) {

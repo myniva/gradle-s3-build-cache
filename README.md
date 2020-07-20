@@ -53,7 +53,11 @@ The AWS S3 build cache implementation has a few configuration options:
 | `awsAccessKeyId` | The AWS access key id | no | from DefaultAWSCredentialsProviderChain |
 | `awsSecretKey` | The AWS secret key | no | from DefaultAWSCredentialsProviderChain |
 | `sessionToken` | The AWS sessionToken when you use temporal credentials | no | from DefaultAWSCredentialsProviderChain |
+| `credentialsDiscoverMode` | Configures the way AWS credentials are detected | yes | AWS_DEFAULT |
 
+The valid values for `credentialsDiscoverMode` are `AWS_DEFAULT`,
+`AWS_LOCAL_ONLY` (the default except plugin does not query EC2 metadata service), and
+`ANONYMOUS_IF_MISSING` (the plugin uses anonymous access if no credentials provided in Gradle).
 
 The `buildCache` configuration block might look like this:
 
