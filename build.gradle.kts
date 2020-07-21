@@ -31,6 +31,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.7.0-M1"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("com.adobe.testing:s3mock-junit5:2.1.22")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
