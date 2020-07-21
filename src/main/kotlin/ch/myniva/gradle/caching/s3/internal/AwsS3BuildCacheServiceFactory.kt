@@ -22,15 +22,13 @@ import com.amazonaws.auth.*
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.client.builder.AwsClientBuilder
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import org.gradle.api.logging.Logging
 import org.gradle.caching.BuildCacheService
 import org.gradle.caching.BuildCacheServiceFactory
-import org.slf4j.LoggerFactory
+
+private val logger = Logging.getLogger(AwsS3BuildCacheServiceFactory::class.java)
 
 class AwsS3BuildCacheServiceFactory : BuildCacheServiceFactory<AwsS3BuildCache> {
-    companion object {
-        private val logger = LoggerFactory.getLogger(AwsS3BuildCacheServiceFactory::class.java)
-    }
-
     override fun createBuildCacheService(
         config: AwsS3BuildCache,
         describer: BuildCacheServiceFactory.Describer
