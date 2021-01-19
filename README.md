@@ -48,6 +48,7 @@ The AWS S3 build cache implementation has a few configuration options:
 | `bucket` | The name of the AWS S3 bucket where cache objects should be stored. | yes | |
 | `path` | The path under which all cache objects should be stored. | no | |
 | `reducedRedundancy` | Whether or not to use [reduced redundancy](https://aws.amazon.com/s3/reduced-redundancy/). | no | true |
+| `streamUpload` | Whether or not to stream the upload via Multipart Uploads, useful for large files and avoiding OutOfMemory errors. | no | false |
 | `endpoint` | Alternative S3 compatible endpoint | no | |
 | `headers` | A map with HTTP headers to be added to each request (nulls are ignored). e.g. `[ 'x-header-name': 'header-value' ]` | no | |
 | `awsAccessKeyId` | The AWS access key id | no | from DefaultAWSCredentialsProviderChain |
@@ -100,6 +101,30 @@ The AWS credential must have at least the following permissions to the bucket:
           "s3:PutObject",
           "s3:GetObject",
           "s3:ListBucket"
+      ],
+      "Resource": [
+          "arn:aws:s3:::your-bucket/*",
+          "arn:aws:s3:::your-bucket"
+      ]
+    }
+  ]
+}
+```
+
+If using `streamUpload` then extra permissions are required, you will require the following permissions:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:AbortMultipartUpload",
+          "s3:ListBucketMultipartUploads",
+          "s3:ListMultipartUploadParts"
       ],
       "Resource": [
           "arn:aws:s3:::your-bucket/*",

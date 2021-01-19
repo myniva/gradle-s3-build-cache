@@ -25,6 +25,7 @@ public class AwsS3BuildCache extends AbstractBuildCache {
   private String bucket;
   private String path;
   private boolean reducedRedundancy = true;
+  private boolean streamUpload = false;
   private String endpoint;
   private Map<String, String> headers;
   private String awsAccessKeyId;
@@ -61,6 +62,14 @@ public class AwsS3BuildCache extends AbstractBuildCache {
 
   public void setReducedRedundancy(boolean reducedRedundancy) {
     this.reducedRedundancy = reducedRedundancy;
+  }
+
+  public boolean isStreamUpload() {
+    return streamUpload;
+  }
+
+  public void setStreamUpload(boolean streamUpload) {
+    this.streamUpload = streamUpload;
   }
 
   public String getEndpoint() {
