@@ -51,7 +51,7 @@ public class AwsS3BuildCacheService implements BuildCacheService {
     this.reducedRedundancy = reducedRedundancy;
   }
 
-  private String getBucketPath(BuildCacheKey key) {
+  protected String getBucketPath(BuildCacheKey key) {
     if (path == null || path.length() == 0) {
       return key.getHashCode();
     }
