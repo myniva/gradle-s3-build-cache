@@ -1,7 +1,8 @@
 plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.9.7'
-    id 'org.shipkit.java' version '2.3.1'
+    id 'org.shipkit.shipkit-changelog' version '1.2.0'
+    id 'org.shipkit.shipkit-auto-version' version '1.2.1'
 }
 
 repositories {
@@ -10,7 +11,6 @@ repositories {
 
 apply plugin: 'maven-publish'
 apply plugin: 'com.gradle.plugin-publish'
-apply plugin: 'org.shipkit.gradle-plugin'
 
 group = 'ch.myniva.gradle'
 
