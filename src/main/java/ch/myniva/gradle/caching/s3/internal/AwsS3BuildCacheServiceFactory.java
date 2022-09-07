@@ -35,10 +35,13 @@ import org.slf4j.LoggerFactory;
 
 import ch.myniva.gradle.caching.s3.AwsS3BuildCache;
 
+import javax.annotation.Nonnull;
+
 public class AwsS3BuildCacheServiceFactory implements BuildCacheServiceFactory<AwsS3BuildCache> {
 
   private static final Logger logger = LoggerFactory.getLogger(AwsS3BuildCacheServiceFactory.class);
 
+  @Nonnull
   @Override
   public BuildCacheService createBuildCacheService(AwsS3BuildCache config, Describer describer) {
     logger.debug("Start creating S3 build cache service");
