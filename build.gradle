@@ -1,16 +1,16 @@
 plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.9.7'
-    id 'org.shipkit.java' version '2.3.1'
+    id 'org.shipkit.shipkit-changelog' version '1.2.0'
+    id 'org.shipkit.shipkit-auto-version' version '1.2.1'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 apply plugin: 'maven-publish'
 apply plugin: 'com.gradle.plugin-publish'
-apply plugin: 'org.shipkit.gradle-plugin'
 
 group = 'ch.myniva.gradle'
 
@@ -18,10 +18,10 @@ sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
 dependencies {
-    compile 'com.amazonaws:aws-java-sdk-s3:1.11.751'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.296'
 
-    testCompile 'junit:junit:4.13'
-    testCompile 'org.mockito:mockito-core:2.28.2'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
 }
 
 gradlePlugin {
@@ -45,9 +45,4 @@ pluginBundle {
             displayName = 'AWS S3 build cache'
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.0'
-    distributionType = 'all'
 }
